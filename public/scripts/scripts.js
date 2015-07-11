@@ -1,6 +1,6 @@
 $(function() {
 
-//form to create a new post
+ //form to create a new post
  var $newPostForm = $("#new_post_form"); 
  
  // underscore function to compile the html template
@@ -9,54 +9,43 @@ $(function() {
  //element to hold all of the posts
  var $postsSection = $("#posts-section");
 
- //constructor function to create new post
- function Posts (post_title, post_content) {
-   this.post_title = post_title;
-   this.post_content = post_content;
- };
 
- //variable to hold all of the new instances
- Posts.all = [];
+ //renders new post to the html page
+ function render(noteHtml) {
+    var $note = $(postingTemplate(noteHtml));
+    $postsSection.append($note)
+  }
 
-//saves new post to Posts.all array
-Posts.prototype.save = function(){
-	   Posts.all.push(this);
-	   console.log(this);
-	 };
-
-//renders new post to the page
-Posts.prototype.render = function() {
- // _.each(Posts.all, function (post, index) {
-   var $note = $(postingTemplate(this));
-   // $note.attr('data-index', index);
-   $postsSection.append($note)
-   console.log("render works")
-   // });
+ // creates new post  
+ function create (post_title, post_content) {
+    var postData = {title: post_title, content: post_content};
+    
+    // send POST request to server to create new phrase on API 
+   $.post('/api/posts', postData, function(data) {
+      var newPost = data;
+      render(newPost);
+    });
  }
 
 
-// listen for the click on the 'Post a Note' button
-$("#newNoteButton").on('click', function() { 
-  // show form to post a new note
-  $(".form-section").toggleClass("display"); 
-  $('#postTitle').focus();
-}); 
+
+  // listen for the click on the 'Post a Note' button
+  $("#newNoteButton").on('click', function() { 
+    // show form to post a new note
+    $(".form-section").toggleClass("display"); 
+    $('#postTitle').focus();
+  }); 
 
 
-//listen for a click on the submit button
+  //listen for a click on the submit button
   $newPostForm.on('submit', function(event) {
-    event.preventDefault();
+     event.preventDefault();
 
-    // create new note object from form data
+    // create new note object from form data and render to the page
     var noteName = $('#postTitle').val();
     var noteContent = $('#postContent').val();
-    var note = new Posts(noteName, noteContent);
+    create(noteName, noteContent);
 
-    // save note
-    note.save();
-
-    // render note
-    note.render();
 
     // reset the form
     $newPostForm[0].reset();
@@ -68,4 +57,5 @@ $("#newNoteButton").on('click', function() {
 
   });
 
+// end of page
 });

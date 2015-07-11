@@ -23,7 +23,7 @@
 	<div class="jumbotron">
 	  <div class="row">
 	  	<div class="col-sm-9 col-sm-offset-1">
-	  		
+	  		<h1>Kudos</h1>
 	  		<p>Positivity is contagious.
 	  		<br>
 	  		Share anonymous notes about kindess and gratitude.</p>
@@ -58,25 +58,29 @@
 <br>
 <br>
 <br>
-	<div id="posts-section">
+<!-- 	underscore template for new posts
+ -->	<div id="posts-section">
 		<script type="text/template" id="post-template">
 		<div class="row postBox">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="panel panel-default">
 				  <div class="panel-body">
-				   <h3><%=post_title%></h3>
-				   <p><%=post_content%></p>
+				   <h3><%=title%></h3>
+				   <p><%=content%></p>
 				  </div>
 				</div>
 			</div>
 		</script>
+		<!-- end of template -->
+
+		<!-- welcome note when no posts are visible  -->
 		<div class="row welcome">
 			<div class="panel panel-default col-md-10 col-md-offset-1">
 			  <div class="panel-body">
 			    <h3>Welcome to Kudos!</h3>
 			    <p>There are no posts yet. Click the button above and be the first to submit a note! 
 			    	<br>
-			    	(Hint: your note's format will look just like this)
+			    	(Hint: your note's format will look just like this, but maybe longer)
 			    </p>
 			  </div>
 			</div>
