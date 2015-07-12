@@ -24,8 +24,13 @@ var posts = [];
 	});
 
 	app.get('/posts/:id', function (req, res) {
-		res.json(posts);
+		console.log(req.params.id)
+		var targetId = parseInt(req.params.id);
+		var foundPost = _.findWhere(posts, {id: targetId});
+		console.log(foundPost);
+		res.send(foundPost);
 	});
+
 
 //API ROUTES
 	// respond to request for all phrases
