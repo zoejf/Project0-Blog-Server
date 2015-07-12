@@ -18,11 +18,26 @@
 	font-size: 80;
 }
 
-.panel {
+.edit-pencil {
+  color: #aaaaaa;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.update-note {
+	text-align: center;
+}
+
+.panel.note {
 	background-image: url("http://i.imgur.com/BXkJZF3.gif");
 	background-size: cover;
 	text-align: center;
 }
+
+.panel.edit {
+	background-color: gray; 
+}
+
 h3 {
 	color: #298499;
 	font-family: 'Covered By Your Grace', cursive;

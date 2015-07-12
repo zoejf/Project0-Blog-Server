@@ -9,24 +9,61 @@ $(function() {
  //element to hold all of the posts
  var $postsSection = $("#posts-section");
 
+//DECLARING FUNCTIONS
 
- //renders new post to the html page
- function render(noteHtml) {
-    var $note = $(postingTemplate(noteHtml));
-    $postsSection.append($note)
-  }
+   //render any post to the html page
+   function render(noteHtml) {
+      var $note = $(postingTemplate(noteHtml));
+      $postsSection.append($note)
+    }
 
- // creates new post  
- function create (post_title, post_content) {
-    var postData = {title: post_title, content: post_content};
-    
-    // send POST request to server to create new phrase on API 
-   $.post('/api/posts', postData, function(data) {
-      var newPost = data;
-      render(newPost);
-    });
- }
+     //render all existing posts to the page
+   function all() {
+     // send GET request to server to get all notes in 'posts' array
+     $.get('/api/posts', function(data) {
+       var allNotes = data;
+       
+       // iterate through each note
+       _.each(allNotes, function(note) {
+         render(note);
+       });
+     });
+   };
 
+   //create new post and render to the page 
+   function create (post_title, post_content) {
+      var postData = {title: post_title, content: post_content};
+      
+      // send POST request to server to create new phrase on API 
+     $.post('/api/posts', postData, function(data) {
+        var newPost = data;
+        render(newPost);
+      });
+   }
+
+    //edit an existing post
+    function update (noteId, updatedTitle, updatedContent) {
+        // send PUT request to server to update phrase
+        $.ajax({
+          type: 'PUT',
+          url: '/api/posts/' + noteId,
+          data: {
+            title: updatedTitle,
+            content: updatedContent
+          },
+          success: function(data) {
+            var updatedNote = data;
+
+            // replace existing note in view with note phrase
+            var $noteHtml = $(postingTemplate(updatedNote));
+            $('#note-' + noteId).replaceWith($noteHtml);
+          }
+        });
+    };
+    //END OF DECLARING FUNCTIONS
+
+  //call 'all' function upon page load
+  all();
 
 
   // listen for the click on the 'Post a Note' button
@@ -53,9 +90,26 @@ $(function() {
 
     //Form disappears from view
     $(".form-section").toggleClass("display"); 
-    $(".welcome").addClass("display");
+
+    //if welcome message was showing, hide it
+
+    // $(".welcome").addClass("display");
 
   });
+
+  //listen for a submit of an 'edit note' form
+  $('#posts-section').on('submit', '.update-note', function(event) {
+      event.preventDefault();
+      
+      // find the note's id (stored in HTML as `data-id`)
+      var noteId = $(this).closest('.note').attr('data-id');
+      
+      // udpate the phrase with form data
+      var updatedTitle = $(this).find('.updated-title').val();
+      var updatedContent = $(this).find('.updated-content').val();
+      console.log("updated Title: " + updatedTitle + "updated Content: " + updatedContent);
+      update(noteId, updatedTitle, updatedContent);
+    })
 
 // end of page
 });
