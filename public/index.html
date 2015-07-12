@@ -81,14 +81,22 @@
 		</div>
 
 	  <!-- form to update notes -->
-	  <div class="collapse" id="update-<%= id %>">
-	    <div class="panel edit panel-default">
+	  <div class="row collapse" id="update-<%= id %>">
+	    <div class="col-md-6 col-md-offset-3 panel edit panel-default">
 	  	  <div class="panel-body">
 	        <br>
-	        <form class="form-inline update-note" >
-	          <input type="text" class="form-control updated-title" value="<%= title %>" placeholder="Edited title">
-	          <input type="text" class="form-control updated-content" value="<%= content %>" placeholder="Edited note">
-	          <input type="submit" class="btn btn-info" value="Update note">
+	        <form class="form-horizontal update-note" >
+		        <div class="form-group">
+		           <label for="postTitle">Title</label>
+			       <input type="text" class="form-control updated-title" value="<%= title %>" placeholder="Edited title" autofocus>
+			    </div>
+	          <br>
+		        <div class="form-group">
+		           <label for="postContent">Post</label>
+		           <input type="text" class="form-control updated-content" value="<%= content %>" placeholder="Edited note">
+		        </div>
+	          <br>
+	          <input type="submit" class="btn btn-info pull-right" value="Update note">
 	        </form>
 	      </div>
 	    </div>
