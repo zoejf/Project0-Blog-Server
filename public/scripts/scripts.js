@@ -34,7 +34,7 @@ $(function() {
    function create (post_title, post_content) {
       var postData = {title: post_title, content: post_content};
       
-      // send POST request to server to create new phrase on API 
+      // send POST request to server to create new note on API 
      $.post('/api/posts', postData, function(data) {
         var newPost = data;
         render(newPost);
@@ -43,7 +43,7 @@ $(function() {
 
     //edit an existing post
     function update (noteId, updatedTitle, updatedContent) {
-        // send PUT request to server to update phrase
+        // send PUT request to server to update note
         $.ajax({
           type: 'PUT',
           url: '/api/posts/' + noteId,
@@ -54,11 +54,24 @@ $(function() {
           success: function(data) {
             var updatedNote = data;
 
-            // replace existing note in view with note phrase
+            // replace existing note in view with new note 
             var $noteHtml = $(postingTemplate(updatedNote));
             $('#note-' + noteId).replaceWith($noteHtml);
           }
         });
+    };
+
+    //delete a specific post
+    function remove (noteId) {
+      $.ajax({
+              type: 'DELETE',
+              url: '/api/posts/' + noteId,
+              success: function(data) {
+                console.log("data: " + data);
+                console.log("note id: " + noteId);
+                $('#note-' + noteId).remove();
+              }
+            });
     };
     //END OF DECLARING FUNCTIONS
 
@@ -98,18 +111,32 @@ $(function() {
   });
 
   //listen for a submit of an 'edit note' form
-  $('#posts-section').on('submit', '.update-note', function(event) {
+  $postsSection.on('submit', '.update-note', function(event) {
       event.preventDefault();
       
       // find the note's id (stored in HTML as `data-id`)
       var noteId = $(this).closest('.note').attr('data-id');
       
-      // udpate the phrase with form data
+      // udpate the note with form data
       var updatedTitle = $(this).find('.updated-title').val();
       var updatedContent = $(this).find('.updated-content').val();
       console.log("updated Title: " + updatedTitle + "updated Content: " + updatedContent);
       update(noteId, updatedTitle, updatedContent);
     })
+
+  //listen for a click on a 'delete note' button
+  $postsSection.on('click', '.delete-note',  function(event) {
+
+            // find the note's id (stored in HTML as `data-id`)
+            var noteId = $(this).closest('.postBox').attr('data-id');
+            console.log(this);
+            console.log($(this).closest('.postBox'));
+            
+            console.log("noteId (client-side): " + noteId)
+            
+            // delete the note
+            remove(noteId);
+          });
 
 // end of page
 });

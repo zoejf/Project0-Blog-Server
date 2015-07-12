@@ -7,24 +7,25 @@ var express = require('express'),
 // tell app to use bodyParser middleware
 app.use(bodyParser.urlencoded({extended: true}));
 
-// serve js and css files from public folder
+// get js and css files from public folder
 app.use(express.static(__dirname + '/public'));
 
+//array to hold all api data (list of posts)
 var posts = [];
 
 //STATIC ROUTES
 
-	// set up root route to respond with 'hello world'
+	//root route to display main html page
 	app.get('/', function (req, res) {
 	  res.sendFile(__dirname + '/views/index.html');
 	});
 
+	//route to display all 'posts' data - in JSON 
 	app.get('/posts', function (req, res) {
 		res.json(posts);
 	});
-
+	//route to display data for one post - in JSON
 	app.get('/posts/:id', function (req, res) {
-		console.log(req.params.id)
 		var targetId = parseInt(req.params.id);
 		var foundPost = _.findWhere(posts, {id: targetId});
 		console.log(foundPost);
@@ -49,7 +50,7 @@ var posts = [];
 			newNote.id = posts[posts.length - 1].id + 1;
 		} else {
 			newNote.id = 1
-		}
+		};
 
 		//add newNote to 'notes' array
 		posts.push(newNote);
@@ -58,7 +59,7 @@ var posts = [];
 		res.json(newNote);
 	});
 
-	//respond to $.put request to edit existing note
+	//respond to $.ajax put request to edit existing note
 	app.put('/api/posts/:id', function (req, res) {
 		// set the value of the id
 		var targetId = parseInt(req.params.id);
@@ -72,11 +73,32 @@ var posts = [];
 		// update the note's content
 		foundPost.content = req.body.content;
 
+		console.log(foundPost);
 		// send back edited object
-		res.json(foundPost)
+		res.json(foundPost);
 	});
 
+	//respond to $.ajax delete request to delete a specific note
+	app.delete('/api/posts/:id', function (req, res) {
+	  console.log(posts);
+	  // set the value of the id and find it in 'posts' array
+	  var targetId = parseInt(req.params.id);
+	  console.log(targetId);
+	  var foundPost = _.findWhere(posts, {id: targetId});
+	  console.log('foundPost 1:' + foundPost);
 
+	  // get the index value of the found post
+	  var index = posts.indexOf(foundPost);
+	  console.log("index: " + index);
+	  
+	  // remove the item at that index, only remove 1 item
+	  posts.splice(index, 1);
+	  console.log(posts);
+	  
+	  // send back deleted object
+	  console.log('foundPost2: ' + foundPost);
+	  res.json(foundPost);
+	});
 
 
 // listen on port 3000
