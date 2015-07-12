@@ -28,6 +28,7 @@
 	text-align: center;
 }
 
+
 .panel.note {
 	background-image: url("http://i.imgur.com/BXkJZF3.gif");
 	background-size: cover;
@@ -35,6 +36,7 @@
 }
 
 .panel.edit {
+	text-align: center;
 	background-color: gray; 
 }
 
@@ -47,8 +49,8 @@ h3 {
 
 p {
 	color: #592848;
-	font-family: 'Source Sans Pro', sans-serif;
-	font-size: 15;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 17;
 }
 
 .display {
@@ -67,6 +69,6 @@ p {
     top: 0;
     width: 100%;
     height: auto;
-    opacity: .3;
+    opacity: .2;
 
 }

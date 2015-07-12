@@ -48,7 +48,7 @@ var posts = [];
 		if (posts.length > 0) {
 			newNote.id = posts[posts.length - 1].id + 1;
 		} else {
-			newNote.id = 0
+			newNote.id = 1
 		}
 
 		//add newNote to 'notes' array
